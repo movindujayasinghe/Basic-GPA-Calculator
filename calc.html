@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="ed.png">
+    <link rel="stylesheet" href="style.css">
+    <title> LNBTI University GPA Calculator</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-section">
+                <div class="logo-placeholder">University Logo</div>
+                <div class="logo-placeholder">Department Logo</div>
+            </div>
+            <h1>GPA Calculator</h1>
+        </div>
+
+        <div class="main-content">
+            <div class="calculator-section">
+                <div class="courses-section">
+                    <h2>Course Information</h2>
+                    <div id="courses-container">
+                        <div class="course-row">
+                            <input type="text" class="course-input" placeholder="Course Name" data-field="name">
+                            <input type="number" class="course-input" placeholder="Credit Hours" min="1" max="6" data-field="credits">
+                            <select class="course-input" data-field="grade">
+                                <option value="">Select Grade</option>
+                                <option value="4.0">A (4.0)</option>
+                                <option value="3.7">A- (3.7)</option>
+                                <option value="3.3">B+ (3.3)</option>
+                                <option value="3.0">B (3.0)</option>
+                                <option value="2.7">B- (2.7)</option>
+                                <option value="2.3">C+ (2.3)</option>
+                                <option value="2.0">C (2.0)</option>
+                                <option value="1.7">C- (1.7)</option>
+                                <option value="1.3">D+ (1.3)</option>
+                                <option value="1.0">D (1.0)</option>
+                                <option value="0.0">F (0.0)</option>
+                            </select>
+                            <button class="remove-btn" onclick="removeCourse(this)">Remove</button>
+                        </div>
+                    </div>
+                    <button class="add-course-btn" onclick="addCourse()">+ Add Course</button>
+                    <button class="calculate-btn" onclick="calculateGPA()">Calculate GPA</button>
+                </div>
+
+                <div class="results-section">
+                    <h2>Your Results</h2>
+                    <div class="gpa-display" id="gpa-result">0.00</div>
+                    <div class="grade-info">
+                        <div>Total Credits: <span id="total-credits">0</span></div>
+                        <div>Quality Points: <span id="quality-points">0.00</span></div>
+                        <div>Grade Classification: <span id="grade-class">-</span></div>
+                    </div>
+                    <div class="gpa-warning" id="gpa-warning" style="display: none;">
+                        ⚠️ GPA Below Minimum Requirement (2.0)
+                    </div>
+                </div>
+            </div>
+
+            <div class="grade-scale">
+                <h3>Standard Grade Scale</h3>
+                <div class="grade-table">
+                    <div class="grade-item">
+                        <div class="grade-letter">A</div>
+                        <div class="grade-points">4.0 Points</div>
+                    </div>
+                    <div class="grade-item">
+                        <div class="grade-letter">A-</div>
+                        <div class="grade-points">3.7 Points</div>
+                    </div>
+                    <div class="grade-item">
+                        <div class="grade-letter">B+</div>
+                        <div class="grade-points">3.3 Points</div>
+                    </div>
+                    <div class="grade-item">
+                        <div class="grade-letter">B</div>
+                        <div class="grade-points">3.0 Points</div>
+                    </div>
+                    <div class="grade-item">
+                        <div class="grade-letter">B-</div>
+                        <div class="grade-points">2.7 Points</div>
+                    </div>
+                    <div class="grade-item">
+                        <div class="grade-letter">C+</div>
+                        <div class="grade-points">2.3 Points</div>
+                    </div>
+                    <div class="grade-item">
+                        <div class="grade-letter">C</div>
+                        <div class="grade-points">2.0 Points</div>
+                    </div>
+                    <div class="grade-item">
+                        <div class="grade-letter">C-</div>
+                        <div class="grade-points">1.7 Points</div>
+                    </div>
+                    <div class="grade-item">
+                        <div class="grade-letter">D+</div>
+                        <div class="grade-points">1.3 Points</div>
+                    </div>
+                    <div class="grade-item">
+                        <div class="grade-letter">D</div>
+                        <div class="grade-points">1.0 Points</div>
+                    </div>
+                    <div class="grade-item">
+                        <div class="grade-letter">F</div>
+                        <div class="grade-points">0.0 Points</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addCourse() {
+            const container = document.getElementById('courses-container');
+            const courseRow = document.createElement('div');
+            courseRow.className = 'course-row';
+            courseRow.innerHTML = `
+                <input type="text" class="course-input" placeholder="Course Name" data-field="name">
+                <input type="number" class="course-input" placeholder="Credit Hours" min="1" max="6" data-field="credits">
+                <select class="course-input" data-field="grade">
+                    <option value="">Select Grade</option>
+                    <option value="4.0">A (4.0)</option>
+                    <option value="3.7">A- (3.7)</option>
+                    <option value="3.3">B+ (3.3)</option>
+                    <option value="3.0">B (3.0)</option>
+                    <option value="2.7">B- (2.7)</option>
+                    <option value="2.3">C+ (2.3)</option>
+                    <option value="2.0">C (2.0)</option>
+                    <option value="1.7">C- (1.7)</option>
+                    <option value="1.3">D+ (1.3)</option>
+                    <option value="1.0">D (1.0)</option>
+                    <option value="0.0">F (0.0)</option>
+                </select>
+                <button class="remove-btn" onclick="removeCourse(this)">Remove</button>
+            `;
+            container.appendChild(courseRow);
+        }
+
+        function removeCourse(button) {
+            const courseRows = document.querySelectorAll('.course-row');
+            if (courseRows.length > 1) {
+                button.parentElement.remove();
+                calculateGPA();
+            }
+        }
+
+        function calculateGPA() {
+            const courseRows = document.querySelectorAll('.course-row');
+            let totalCredits = 0;
+            let totalQualityPoints = 0;
+            let validCourses = 0;
+
+            courseRows.forEach(row => {
+                const credits = parseFloat(row.querySelector('[data-field="credits"]').value) || 0;
+                const grade = parseFloat(row.querySelector('[data-field="grade"]').value);
+                
+                if (credits > 0 && !isNaN(grade)) {
+                    totalCredits += credits;
+                    totalQualityPoints += credits * grade;
+                    validCourses++;
+                }
+            });
+
+            const gpa = totalCredits > 0 ? totalQualityPoints / totalCredits : 0;
+            
+            // Update display
+            document.getElementById('gpa-result').textContent = gpa.toFixed(2);
+            document.getElementById('total-credits').textContent = totalCredits;
+            document.getElementById('quality-points').textContent = totalQualityPoints.toFixed(2);
+            
+            // Check minimum GPA requirement
+            const warningElement = document.getElementById('gpa-warning');
+            if (gpa > 0 && gpa < 2.0) {
+                warningElement.style.display = 'block';
+            } else {
+                warningElement.style.display = 'none';
+            }
+            
+            // Determine grade classification
+            let gradeClass = '';
+            if (gpa >= 3.7) gradeClass = 'Summa Cum Laude';
+            else if (gpa >= 3.5) gradeClass = 'Magna Cum Laude';
+            else if (gpa >= 3.25) gradeClass = 'Cum Laude';
+            else if (gpa >= 3.0) gradeClass = 'Dean\'s List';
+            else if (gpa >= 2.0) gradeClass = 'Good Standing';
+            else if (gpa > 0) gradeClass = 'Academic Probation';
+            else gradeClass = '-';
+            
+            document.getElementById('grade-class').textContent = gradeClass;
+        }
+
+        // Calculate GPA on input change
+        document.addEventListener('input', function(e) {
+            if (e.target.classList.contains('course-input')) {
+                calculateGPA();
+            }
+        });
+
+        // Initial calculation
+        calculateGPA();
+    </script>
+</body>
+</html>
